@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from flask import Flask, render_template, request, redirect
 import requests
 from iexfinance import Stock
@@ -9,16 +12,20 @@ with open('stocks.json') as f:
 
 app = Flask(__name__)
 
-global s
+global stocks_list_input
 
 class Stock:
 
-    def __init__(self, amount,strategies):
+    def __init__(self, amount,strategies,stocks):
         self.amount = amount
         self.strategies = strategies
+        self.stocks = stocks
 
     def inputStrategies(self, strategies):
         self.strategies = strategies    
+
+    def inputStocks(self,stocks):
+        self.stocks = stocks
 
 @app.route('/', methods = ['GET'])
 def display_strategies():
@@ -27,6 +34,7 @@ def display_strategies():
 
 
     return render_template('index.html', strategies = strategies)
+
 
 @app.route('/stocks', methods = ['POST'])
 def display_stocks():
@@ -49,13 +57,42 @@ def display_stocks():
         errorMessage = 'Please select upto 2 strategies'
         return render_template('error.html', errorMessage=errorMessage)
 
-    s =  Stock(userAmount,strategiesPicked)
+    
 
     for s in strategiesPicked:
         stocks.append(data[s])
 
     stocks_list = [item for sublist in stocks for item in sublist]
+    s =  Stock(userAmount,strategiesPicked,stocks_list)
+
+    stocks = stocks_list
+
     # print(stocks_list)
+
+
+    # portfolio_dict = {}
+    # now = datetime.datetime.now()
+    # print("in portfolio")
+    # for stock in stocks_list:
+    #     ticker_symbol = data[stock]
+
+    #     portfolio_list = []
+
+    #     for i in range(4,0,-1):
+    #         date = now - datetime.timedelta(days=i)
+
+    #         lookup_date = str(date.year)+str(date.month)+str(date.day)
+    #         stock_info = requests.get('https://api.iextrading.com/1.0/stock/'+ticker_symbol+'/chart/date/'+lookup_date)
+
+    #         if stock_info.status_code == 200:
+    #             json_data = stock_info.json()
+    #             portfolio_list.add(json_data['marktOpen'])
+    #         else:
+    #             print("Error: API unreachable") 
+
+    #     portfolio_dict[ticker_symbol] = portfolio_list
+
+    # print("####:    "+str(portfolio_dict))
 
     stock_dict = {}
     latestPriceDictionary = {}
@@ -83,7 +120,7 @@ def display_stocks():
             companyName = json_data['companyName']
 
             stock_quote.append(json_data)
-            print("Stock quote list:    "+str(stock_quote))
+            # print("Stock quote list:    "+str(stock_quote))
 
             stock_dict[stock] = changePercent
             latestPriceDictionary[stock] = latestPrice
@@ -92,6 +129,8 @@ def display_stocks():
 
         else:
             print("Error: API not reachable!!")
+
+    stocks_list_input = stock_quote
 
     for x in stock_quote:
         percent_change1 = stock_dict.values()
@@ -115,7 +154,7 @@ def display_stocks():
             amount3 = 0.3 * investment_amount
             amount2 = 0.2 * investment_amount
 
-        print("percent_change1 is greatest")
+        # print("percent_change1 is greatest")
 
 
     if percent_change2 > percent_change1 and percent_change2 > percent_change3 :
@@ -130,7 +169,7 @@ def display_stocks():
             amount3 = 0.3 * investment_amount
             amount1 = 0.2 * investment_amount
 
-        print("percent_change2 is greatest")
+        # print("percent_change2 is greatest")
 
 
     if percent_change3 > percent_change2 and percent_change3 > percent_change1 :
@@ -145,11 +184,42 @@ def display_stocks():
             amount1 = 0.3 * investment_amount
             amount2 = 0.2 * investment_amount
 
-        print("percent_change3 is greatest")
+        # print("percent_change3 is greatest")
  
     return render_template('displayStock.html',investment_amount = userAmount, chosen_strategy = strategiesPicked, compName= compName, 
         changeInPrice=changeInPrice, latestPrice= latest_Price, amount1 =amount1, amount2=amount2,
         amount3 =amount3, two_strategies=two_strategies, strategy1= strategy1, strategy2=strategy2)
+
+@app.route('/portfolio', methods = ['POST'])
+def displayportfolio(): 
+
+    portfolio_dict = {}
+    now = datetime.datetime.now()
+    print("in portfolio")
+    
+
+    print(stocks_list_input)
+
+    for stock in stocks_list:
+        ticker_symbol = data[stock]
+
+        portfolio_list = []
+
+        for i in range(4,0,-1):
+            date = now - datetime.timedelta(days=i)
+
+            lookup_date = str(date.year)+str(date.month)+str(date.day)
+            stock_info = requests.get('https://api.iextrading.com/1.0/stock/'+ticker_symbol+'chart/date/'+lookup_date)
+
+            if stock_info.status_code == 200:
+                json_data = stock_info.json()
+                portfolio_list.add(json_data['marktOpen'])
+            else:
+                print("Error: API unreachable") 
+
+        portfolio_dict[ticker_symbol] = portfolio_list
+
+    print("####:    "+str(portfolio_dict))       
 
 if __name__ == '__main__':
     app.debug = True
