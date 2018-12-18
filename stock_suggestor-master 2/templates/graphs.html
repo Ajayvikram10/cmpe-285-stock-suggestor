@@ -10,18 +10,18 @@
                 theme: "dark1", // "light2", "dark1", "dark2"
                 animationEnabled: false, // change to true      
                 title: {
-                    text: "Gilead Sciences Inc."
+                    text: {{compName[0]}}
                 },
                 data: [
                     {
                         // Change type to "bar", "area", "spline", "pie",etc.
                         type: "column",
                         dataPoints: [
-                            { label: "first", y: 68.13 },
-                            { label: "second", y: 67.72 },
-                            { label: "third", y: 68.14 },
-                            { label: "fourth", y: 67.35 },
-                            { label: "fifth", y: 65.30 }
+                            { label: "first", y: {latestPrice[0]} },
+                            { label: "second", y: {latestPrice[1]} },
+                            { label: "third", y: {latestPrice[2]} },
+                            { label: "fourth", y: {latestPrice[3]} },
+                            { label: "fifth", y: {latestPrice[4]} }
                         ]
                     }
                 ]
@@ -32,18 +32,18 @@
                 theme: "dark2", // "light2", "dark1", "dark2"
                 animationEnabled: false, // change to true      
                 title: {
-                    text: "Alphabet Inc."
+                    text: {{compName[1]}}
                 },
                 data: [
                     {
                         // Change type to "bar", "area", "spline", "pie",etc.
                         type: "column",
                         dataPoints: [
-                            { label: "first", y: 1068.71 },
-                            { label: "second", y: 1076.02 },
-                            { label: "third", y: 1073.73 },
-                            { label: "fourth", y: 1073.54 },
-                            { label: "fifth", y: 1046.90 }
+                            { label: "first", y: {latestPrice[0]} },
+                            { label: "second", y: {latestPrice[1]} },
+                            { label: "third", y: {latestPrice[2]} },
+                            { label: "fourth", y: {latestPrice[3]} },
+                            { label: "fifth", y: {latestPrice[4]} }
                         ]
                     }
                 ]
@@ -54,45 +54,45 @@
                 theme: "dark2", // "light2", "dark1", "dark2"
                 animationEnabled: false, // change to true      
                 title: {
-                    text: "Adobe Inc."
+                    text: {{compName[2]}}
                 },
                 data: [
                     {
                         // Change type to "bar", "area", "spline", "pie",etc.
                         type: "column",
                         dataPoints: [
-                            { label: "first", y: 251.43 },
-                            { label: "second", y: 245.34 },
-                            { label: "third", y: 248.69 },
-                            { label: "fourth", y: 248.08 },
-                            { label: "fifth", y: 227.20 }
+                            { label: "first", y: {latestPrice[0]} },
+                            { label: "second", y: {latestPrice[1]} },
+                            { label: "third", y: {latestPrice[2]} },
+                            { label: "fourth", y: {latestPrice[3]} },
+                            { label: "fifth", y: {latestPrice[4]} }
                         ]
                     }
                 ]
             });
             chart.render();
 
-            // var chart = new CanvasJS.Chart("chartContainer3", {
-            //     theme: "dark1", // "light2", "dark1", "dark2"
-            //     animationEnabled: false, // change to true      
-            //     title: {
-            //         text: "Basic Column Chart"
-            //     },
-            //     data: [
-            //         {
-            //             // Change type to "bar", "area", "spline", "pie",etc.
-            //             type: "column",
-            //             dataPoints: [
-            //                 { label: "first", y: 10 },
-            //                 { label: "second", y: 15 },
-            //                 { label: "third", y: 25 },
-            //                 { label: "fourth", y: 30 },
-            //                 { label: "fifth", y: 28 }
-            //             ]
-            //         }
-            //     ]
-            // });
-            // chart.render();
+            var chart = new CanvasJS.Chart("chartContainer3", {
+                theme: "dark1", // "light2", "dark1", "dark2"
+                animationEnabled: false, // change to true      
+                title: {
+                    text: "Basic Column Chart"
+                },
+                data: [
+                    {
+                        // Change type to "bar", "area", "spline", "pie",etc.
+                        type: "column",
+                        dataPoints: [
+                            { label: "first", y: 10 },
+                            { label: "second", y: 15 },
+                            { label: "third", y: 25 },
+                            { label: "fourth", y: 30 },
+                            { label: "fifth", y: 28 }
+                        ]
+                    }
+                ]
+            });
+            chart.render();
         }
 
 
